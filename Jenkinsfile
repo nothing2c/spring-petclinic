@@ -6,8 +6,6 @@ environment {
 
 
    stage('Preparation') { // for display purposes
-        bat "mvn -version"
-        bat "mvn clean install"
       mvnHome = tool 'maven'
    }
    stage('Build') {
