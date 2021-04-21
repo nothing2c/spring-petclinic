@@ -16,7 +16,6 @@ pipeline {
             bat "mvn -version"
             //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
             bat 'mvn -Dmaven.test.failure.ignore=true install' 
-            }
          }
       }
       
