@@ -19,16 +19,16 @@ pipeline {
          }
       }
       
-      stage("Junit Testing") {
-         steps {
-            bat 'mvn test'
-         }
-         post {
-            always {
-               junit allowEmptyResults: true, testResults: 'target/surefire-reports/**/*.xml' 
-            }
-         }
-      }
+      //stage("Junit Testing") {
+         //steps {
+            //bat 'mvn test'
+         //}
+         //post {
+            //always {
+               //junit allowEmptyResults: true, testResults: 'target/surefire-reports/**/*.xml' 
+            //}
+         //}
+      //}
       
       stage('Sonarqube Analysis') {
          environment {
@@ -37,7 +37,7 @@ pipeline {
          
          steps {
             withSonarQubeEnv('SonarCub') {
-               bat "${scannerHome}/bin/sonar-scanner -X"
+               bat "${scannerHome}/bin/sonar-scanner -X Dsonar.projectKey=${env.JOB_BASE_NAME}"
             }
          }
       }
