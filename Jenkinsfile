@@ -5,7 +5,7 @@ environment {
         dockerImage = ' '}
    
    tools {
-        maven "maven"
+        mvnHome "maven"
     }
 
    stages{
