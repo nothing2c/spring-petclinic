@@ -32,7 +32,7 @@ pipeline {
       
       stage('Sonarqube Analysis') {
          environment {
-            scannerHome = tool 'SonarCub Scanner ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+            scannerHome = tool 'SonarCub Scanner'
          }
          
          steps {
