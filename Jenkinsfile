@@ -52,7 +52,7 @@ pipeline {
          post {
             success {
                archiveArtifacts 'target/*.jar'
-               bat "docker run -p 80:8080 ryancosheril/petclinic"
+               //bat "docker run -p 80:8080 ryancosheril/petclinic"
             }
          }
       }
