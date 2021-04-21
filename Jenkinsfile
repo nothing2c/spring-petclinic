@@ -15,7 +15,7 @@ pipeline {
          steps {
             bat "mvn -version"
             //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-            bat 'mvn -Dmaven.test.failure.ignore=true install' 
+            bat 'mvn install -DskipTests' 
          }
       }
       
@@ -32,7 +32,7 @@ pipeline {
       
       stage('Sonarqube Analysis') {
          environment {
-            scannerHome = tool 'SonarQubeScanner'
+            scannerHome = tool 'SonarCub Scanner'
          }
          
          steps {
