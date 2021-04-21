@@ -30,7 +30,7 @@ pipeline {
          //}
       //}
       
-      stage('Sonarqube Analysis') {
+      /*stage('Sonarqube Analysis') {
          environment {
             scannerHome = tool 'SonarCub Scanner'
          }
@@ -43,11 +43,11 @@ pipeline {
                bat "${scannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://localhost:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
             }
          }
-      }
+      }*/
 
       stage("Deploy") {
          steps {
-            bat "mvn clean package"
+            bat docker build -t ryancosheril/petclinic:latest .
          }
          post {
             success {
