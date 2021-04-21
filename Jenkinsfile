@@ -39,7 +39,7 @@ pipeline {
             //withSonarQubeEnv('SonarCub') {
                //bat "${scannerHome}/bin/sonar-scanner -X Dsonar.projectKey=${env.JOB_BASE_NAME}"
             //}
-            withCredentials([string(credentialsId: 'SonarToken', variable: 'SonarTon')]) {
+            withCredentials([string(credentialsId: 'SonarToken', variable: 'sonarLogin')]) {
                bat "${scannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://localhost:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
             }
          }
