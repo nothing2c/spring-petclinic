@@ -12,7 +12,6 @@ environment {
         stage("Build") {
             steps {
                 bat "mvn -version"
-                bat "mvn clean install"
             }
         }
         stage("Junit Testing") {
@@ -21,7 +20,7 @@ environment {
             }
             post {
                 always {
-                    junit '*/target/surefire-reports/TEST-.xml'
+                    junit '**/target/surefire-reports/TEST-.xml'
                 }
             }
         }
