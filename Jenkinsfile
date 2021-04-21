@@ -1,13 +1,18 @@
 pipeline {
    agent any
-   def mvnHome
 environment {
         registryCredential = 'dock'
         dockerImage = ' '}
+   
+   tools {
+        maven "maven"
+    }
 
-
+   stages{
    stage('Preparation') { // for display purposes
-      mvnHome = tool 'maven'
+      //mvnHome = tool 'maven'
+      
+      echo 'yeet'
    }
    stage('Build') {
       // Run the maven build
@@ -34,5 +39,6 @@ environment {
       junit '*/target/surefire-reports/TEST-.xml'
       archiveArtifacts 'target/*.jar'
 
+   }
    }
 }
