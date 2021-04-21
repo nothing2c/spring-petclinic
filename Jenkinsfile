@@ -14,7 +14,9 @@ pipeline {
       stage("Build") {
          steps {
             bat "mvn -version"
-            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+            //bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+            bat 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
          }
       }
       
@@ -24,7 +26,7 @@ pipeline {
          }
          post {
             always {
-               junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
+               junit allowEmptyResults: true, testResults: 'target/surefire-reports/**/*.xml' 
             }
          }
       }
