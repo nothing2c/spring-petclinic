@@ -1,38 +1,51 @@
 pipeline {
    agent any
-environment {
-        registryCredential = 'dock'
-        dockerImage = ' '}
+   
+   environment {
+      registryCredential = 'dock'
+      dockerImage = ' '
+   }
    
    tools {
-        maven "maven"
-    }
+      maven "maven"
+   }
 
    stages {
-        stage("Build") {
-            steps {
-                bat "mvn -version"
+      stage("Build") {
+         steps {
+            bat "mvn -version"
+            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+         }
+      }
+      
+      stage("Junit Testing") {
+         steps {
+            bat 'mvn test'
+         }
+         post {
+            always {
+               junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
             }
-        }
-        stage("Junit Testing") {
-            steps {
-                bat 'mvn test'
+         }
+      }
+      
+      stage('Sonarqube Analysis') {
+         environment {
+            scannerHome = tool 'SonarQubeScanner'
+         }
+         
+         steps {
+            withSonarQubeEnv('sonarqube') {
+               bat "${scannerHome}/bin/sonar-scanner -X
             }
-            post {
-                always {
-                    junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
-                }
-            }
-        }
-        stage('Sonarqube Analysis') {
-            // Reference https://github.com/jatinngupta/Jenkins-SonarQube-Pipeline/blob/master/Jenkinsfile
-            steps {
-                script {
+         }
+      }
+                //script {
                     //scannerHome = tool 'sonar-scanner';
-                    def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withCredentials([string(credentialsId: 'SonarToken', variable: 'SonarToken')]) {
-                        bat "${scannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://localhost:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
-                    }
+                    //def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    //withCredentials([string(credentialsId: 'SonarToken', variable: 'SonarToken')]) {
+                        //bat "${scannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://localhost:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
+                    //}
                 }
             }
         }
