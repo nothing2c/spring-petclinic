@@ -18,10 +18,18 @@ environment {
          }
       }
    }
+   
+   stage('Building Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build "nothing2c/spring-petclinic:latest"
+                }
+            }
+        }
 
-   stage('Build Docker Image'){
-           bat 'docker build -t nothing2c/spring-petclinic:latest .'
-   }
+   //stage('Build Docker Image'){
+           //bat 'docker build -t nothing2c/spring-petclinic:latest .'
+   //}
    stage('Results') {
 
       junit '*/target/surefire-reports/TEST-.xml'
