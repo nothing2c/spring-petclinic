@@ -20,7 +20,7 @@ environment {
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/TEST-.xml'
+                    junit allowEmptyResults: true, testResults: '**/test-results/*.xml'
                 }
             }
         }
