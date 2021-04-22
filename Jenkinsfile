@@ -47,12 +47,28 @@ pipeline {
 
       stage("Deploy") {
          steps {
-            bat "docker build -t ryancosheril/petclinic:latest ."
+            //bat "docker build -t ryancosheril/petclinic:latest ."
+            dockerImage = docker.build "ryancosheril/petclinic:latest"
+            docker.withRegistry('', registryCredential) {
+               dockerImage.push("$BUILD_NUMBER")
+               dockerImage.push('latest')
+            }
          }
          post {
             success {
                archiveArtifacts 'target/*.jar'
-               //bat "docker run -p 80:8080 ryancosheril/petclinic"
+               emailext ( 
+                  subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
+                  to: "ryan1cosheril@gmail.com", 
+                  body: """SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at ${env.BUILD_URL}""", recipientProviders: [ [$class: 'DevelopersRecipientProvider'],
+                  [$class: 'RequesterRecipientProvider'] ] )
+            }
+            failure { 
+               emailext ( 
+                  subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
+                  to: "ryan1cosheril@gmail.com", 
+                  body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at ${env.BUILD_URL}""", recipientProviders: [ [$class: 'DevelopersRecipientProvider'],
+                  [$class: 'RequesterRecipientProvider'] ] )
             }
          }
       }
