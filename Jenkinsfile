@@ -47,13 +47,7 @@ pipeline {
 
       stage("Deploy") {
          steps {
-            //bat "docker build -t ryancosheril/petclinic:latest ."
-            script{
-            dockerImage = docker.build "ryancosheril/petclinic:latest"
-            docker.withRegistry('', registryCredential) {
-               dockerImage.push("$BUILD_NUMBER")
-               dockerImage.push('latest')
-            }
+            bat "docker build -t ryancosheril/petclinic:latest ."
             }
          }
          post {
