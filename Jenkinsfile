@@ -42,12 +42,6 @@ pipeline {
             withCredentials([string(credentialsId: 'SonarToken', variable: 'sonarLogin')]) {
                bat "${scannerHome}/bin/sonar-scanner -X -Dsonar.host.url=http://localhost:9000/ -Dsonar.login=${sonarLogin} -Dsonar.projectName=${env.JOB_NAME} -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=${env.JOB_BASE_NAME} -Dsonar.sources=src/main/java -Dsonar.java.libraries=target/* -Dsonar.java.binaries=target/classes -Dsonar.language=java"
             }
-            timeout(time: 5, unit: 'MINUTES') {
-               def qualitygate = waitForQualityGate()
-               if (qualitygate.status != "OK") {
-                  error "Pipeline aborted due to quality gate coverage failure."
-               }
-            }
          }
       }
 
