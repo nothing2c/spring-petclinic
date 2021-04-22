@@ -47,7 +47,7 @@ pipeline {
 
       stage("Deploy") {
          steps {
-            bat "docker build -t ryancosheril/petclinic:latest ."
+            bat "docker build -t pet_build ."
          }
          post {
             success {
